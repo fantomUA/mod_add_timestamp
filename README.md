@@ -1,0 +1,1 @@
+original https://github.com/johanvorster/ejabberd_add_timestamp
