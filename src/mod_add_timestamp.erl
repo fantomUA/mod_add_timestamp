@@ -27,7 +27,7 @@ on_filter_packet({From, To, XML} = Packet) ->
     %% Add timestamp to chat message and where no DataTag exist 
     case Type =:= "groupchat" andalso DataTag =:= false of
         true -> 
-            Timestamp = now_to_seconds(erlang:now()),
+            Timestamp = now_to_microseconds(erlang:now()),
             FlatTimeStamp = lists:flatten(io_lib:format("~p", [Timestamp])),
             XMLTag = {xmlelement,"data", [{"timestamp", FlatTimeStamp}], []}, 
             TimeStampedPacket = xml:append_subtags(XML, [XMLTag]),
@@ -38,7 +38,7 @@ on_filter_packet({From, To, XML} = Packet) ->
     end,
     Return.
     
-now_to_seconds({Mega, Sec, _Micro}) ->
+now_to_microseconds({Mega, Sec, Micro}) ->
     %%Epoch time in milliseconds from 1 Jan 1970
-    (Mega*1000000 + Sec). 
+    (Mega*1000000 + Sec)*1000000 + Micro. 
 
